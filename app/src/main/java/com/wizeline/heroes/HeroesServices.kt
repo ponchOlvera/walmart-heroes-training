@@ -1,6 +1,6 @@
 package com.wizeline.heroes
 
-import retrofit2.Call
+import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,5 +11,6 @@ interface HeroesServices {
         @Query("ts") ts: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
-    ): Call<Characters>
+        @Query("limit") limit: Int,
+    ): Observable<Characters>
 }

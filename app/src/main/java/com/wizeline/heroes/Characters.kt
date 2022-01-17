@@ -1,33 +1,35 @@
 package com.wizeline.heroes
 
+import com.google.gson.annotations.SerializedName
+
 data class Characters(
-    val code: Int,
-    val status: String,
-    val copyright: String,
-    val attributionText: String,
-    val attributionHTML: String,
-    val etag: String,
-    val data: Data
+    @SerializedName("code") val code: Int,
+    @SerializedName("status") val status: String,
+    @SerializedName("copyright") val copyright: String,
+    @SerializedName("attributionText") val attributionText: String,
+    @SerializedName("attributionHML")val attributionHTML: String,
+    @SerializedName("etag") val etag: String,
+    @SerializedName("data") val data: Data
 )
 
 data class Data(
-    val offset: Int,
-    val limit: Int,
-    val total: Int,
-    val count: Int,
-    val results: List<Result>,
+    @SerializedName("offset") val offset: Int,
+    @SerializedName("limit") val limit: Int,
+    @SerializedName("total") val total: Int,
+    @SerializedName("count") val count: Int,
+    @SerializedName("results") val results: List<Result>,
 )
 
 data class Result(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val modified: String,
-    val thumbnail: Thumbnail,
-    val resourceURI: String
+    @SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("description") val description: String,
+    @SerializedName("modified") val modified: String,
+    @SerializedName("thumbnail") val thumbnail: Thumbnail,
+    @SerializedName("resourceURI") val resourceURI: String
 )
 
 data class Thumbnail(
-    val path: String,
-    val extension: String
+    @SerializedName("path") val path: String,
+    @SerializedName("extension") val extension: String
 )
