@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.wizeline.heroes.databinding.ActivityMainBinding
+import com.wizeline.heroes.ui.fragments.CharactersFragment
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -17,18 +18,20 @@ class MainActivity : AppCompatActivity() {
     private val apikey = "6ffcf49b680b7250a6983acd33731f55"
     private val ts = System.currentTimeMillis().toString()
 
+    private lateinit var binding: ActivityMainBinding
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvMain.text = "Poncho Binding"
-        binding.tvMain.setOnClickListener {
-            requestCharacters()
-        }
+        setupView()
         requestCharacters()
+    }
+
+    private fun setupView() {
+        supportFragmentManager.beginTransaction().add(R.id.container , CharactersFragment.newInstance()).commit()
     }
 
     private fun requestCharacters() {
