@@ -88,8 +88,9 @@ class CharactersFragment : Fragment() {
             changeLoadingState(false)
         }
         if (marvelViewState.error.isNotEmpty()) {
-            Toast.makeText(context, "Error detectado: ${marvelViewState.error}", Toast.LENGTH_SHORT)
+            Toast.makeText(context, "Error detectado: ${marvelViewState.error}", Toast.LENGTH_LONG)
                 .show()
+            changeLoadingState(false)
         }
         if (marvelViewState.isLoading) {
             showDialog(context)
