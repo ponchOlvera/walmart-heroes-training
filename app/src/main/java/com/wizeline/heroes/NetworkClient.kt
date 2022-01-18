@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkClient {
 
-    var retrofitInstance: Retrofit? = null
+    private var retrofitInstance: Retrofit? = null
 
     init {
         if (retrofitInstance == null) createRetrofitInstance()
