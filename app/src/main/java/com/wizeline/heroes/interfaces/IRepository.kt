@@ -3,7 +3,7 @@ package com.wizeline.heroes.interfaces
 import com.wizeline.heroes.Characters
 import com.wizeline.heroes.models.ComicData
 import com.wizeline.heroes.models.SeriesData
-import io.reactivex.Observable
+import io.reactivex.Single
 
 interface IRepository {
 
@@ -12,19 +12,19 @@ interface IRepository {
         apikey: String,
         hash: String,
         offset: Int
-    ): Observable<Characters>
+    ): Single<Characters>
 
     fun getComicsByCharacter(
         ts: String,
         apikey: String,
         hash: String,
         characterId: Int
-    ): Observable<ComicData>
+    ): Single<ComicData>
 
     fun getSeriesByCharacter(
         ts: String,
         apikey: String,
         hash: String,
         characterId: Int
-    ): Observable<SeriesData>
+    ): Single<SeriesData>
 }

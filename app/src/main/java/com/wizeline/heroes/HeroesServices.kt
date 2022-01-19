@@ -3,6 +3,7 @@ package com.wizeline.heroes
 import com.wizeline.heroes.models.ComicData
 import com.wizeline.heroes.models.SeriesData
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -15,7 +16,7 @@ interface HeroesServices {
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Query("offset") offset: Int,
-    ): Observable<Characters>
+    ): Single<Characters>
 
     @GET("characters/{characterId}/comics")
     fun comicsByCharacter(
@@ -23,7 +24,7 @@ interface HeroesServices {
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Path("characterId") characterId: Int,
-    ): Observable<ComicData>
+    ): Single<ComicData>
 
     @GET("characters/{characterId}/series")
     fun seriesByCharacter(
@@ -31,5 +32,5 @@ interface HeroesServices {
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Path("characterId") characterId: Int,
-    ): Observable<SeriesData>
+    ): Single<SeriesData>
 }

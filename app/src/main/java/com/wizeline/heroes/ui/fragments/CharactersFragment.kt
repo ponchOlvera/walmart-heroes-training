@@ -48,7 +48,15 @@ class CharactersFragment : Fragment() {
         setupViewModel()
         changeLoadingState(true)
         setupRecyclerView()
+        setupRetryButton()
         refreshCharacters()
+    }
+
+    private fun setupRetryButton() {
+        mBinding.btnRetry.setOnClickListener {
+            changeLoadingState(true)
+            refreshCharacters(mOffset)
+        }
     }
 
     private fun setupViewModel() {
@@ -82,8 +90,9 @@ class CharactersFragment : Fragment() {
 
     private fun renderViewState(marvelViewState: MarvelViewState) {
         if (marvelViewState.isListUpdated) {
-            // TODO: 17/01/22 render the list into the recyclerView
-            Log.i("renderViewState", "" + marvelViewState.characterList.size)
+
+            if (mBinding.btnRetry.visibility == View.VISIBLE) mBinding.btnRetry.visibility = View.GONE
+            
             mCharacterRecyclerViewAdapter.addData(marvelViewState.characterList)
             mMarvelViewModel.listUpdated()
             changeLoadingState(false)
@@ -107,6 +116,7 @@ class CharactersFragment : Fragment() {
         } else{
             changeLoadingState(false)
             Toast.makeText(context, "No internet connection, please connect to a internet Network", Toast.LENGTH_LONG).show()
+            mBinding.btnRetry.visibility = View.VISIBLE
         }
     }
 

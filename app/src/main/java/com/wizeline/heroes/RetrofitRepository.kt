@@ -4,6 +4,7 @@ import com.wizeline.heroes.interfaces.IRepository
 import com.wizeline.heroes.models.ComicData
 import com.wizeline.heroes.models.SeriesData
 import io.reactivex.Observable
+import io.reactivex.Single
 
 class RetrofitRepository: IRepository {
 
@@ -12,7 +13,7 @@ class RetrofitRepository: IRepository {
         apikey: String,
         hash: String,
         offset: Int
-    ): Observable<Characters> {
+    ): Single<Characters> {
         return NetworkClient.getServices().characters(ts, apikey, hash, offset)
     }
 
@@ -21,7 +22,7 @@ class RetrofitRepository: IRepository {
         apikey: String,
         hash: String,
         characterId: Int
-    ): Observable<ComicData> {
+    ): Single<ComicData> {
         return NetworkClient.getServices().comicsByCharacter(ts, apikey, hash, characterId)
     }
 
@@ -30,7 +31,7 @@ class RetrofitRepository: IRepository {
         apikey: String,
         hash: String,
         characterId: Int
-    ): Observable<SeriesData> {
+    ): Single<SeriesData> {
         return NetworkClient.getServices().seriesByCharacter(ts, apikey, hash, characterId)
     }
 }
