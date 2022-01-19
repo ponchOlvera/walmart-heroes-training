@@ -13,6 +13,7 @@ import com.wizeline.heroes.RetrofitRepository
 import com.wizeline.heroes.databinding.FragmentCharactersBinding
 import com.wizeline.heroes.models.MarvelViewState
 import com.wizeline.heroes.ui.ExtensionFunctions.dismissDialog
+import com.wizeline.heroes.ui.ExtensionFunctions.isInternetAvailable
 import com.wizeline.heroes.ui.ExtensionFunctions.showDialog
 import com.wizeline.heroes.ui.abstract.PaginationScrollListener
 import com.wizeline.heroes.ui.adapters.CharacterRecyclerViewAdapter
@@ -100,8 +101,13 @@ class CharactersFragment : Fragment() {
     }
 
     private fun refreshCharacters(offset: Int = 0) {
-        mOffset += offset
-        mMarvelViewModel.getCharacters(mRetrofitRepository, mOffset)
+        if(isInternetAvailable(context!!)){
+            mOffset += offset
+            mMarvelViewModel.getCharacters(mRetrofitRepository, mOffset)
+        } else{
+            changeLoadingState(false)
+            Toast.makeText(context, "No internet connection, please connect to a internet Network", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun changeLoadingState(loading: Boolean) {
