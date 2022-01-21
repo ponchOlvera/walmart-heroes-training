@@ -1,15 +1,38 @@
 package com.wizeline.heroes
 
-import retrofit2.Call
+import com.wizeline.heroes.Endpoint.CHARACTERS_URL
+import com.wizeline.heroes.Endpoint.COMICS_URL
+import com.wizeline.heroes.Endpoint.SERIES_URL
+import com.wizeline.heroes.models.ComicData
+import com.wizeline.heroes.models.SeriesData
+import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface HeroesServices {
 
-    @GET("characters")
+    @GET(CHARACTERS_URL)
     fun characters(
-        @Query("ts") ts: String,
+        @Query("ts") timestamp: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
-    ): Call<Characters>
+        @Query("offset") offset: Int,
+    ): Single<Characters>
+
+    @GET(COMICS_URL)
+    fun comicsByCharacter(
+        @Query("ts") timestamp: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Path("characterId") characterId: Int,
+    ): Single<ComicData>
+
+    @GET(SERIES_URL)
+    fun seriesByCharacter(
+        @Query("ts") timestamp: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Path("characterId") characterId: Int,
+    ): Single<SeriesData>
 }

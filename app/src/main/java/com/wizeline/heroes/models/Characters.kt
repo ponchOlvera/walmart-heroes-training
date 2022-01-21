@@ -1,5 +1,7 @@
 package com.wizeline.heroes
 
+import com.wizeline.heroes.models.Character
+
 data class Characters(
     val code: Int,
     val status: String,
@@ -15,16 +17,7 @@ data class Data(
     val limit: Int,
     val total: Int,
     val count: Int,
-    val results: List<Result>,
-)
-
-data class Result(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val modified: String,
-    val thumbnail: Thumbnail,
-    val resourceURI: String
+    val results: List<Character>,
 )
 
 data class Thumbnail(
