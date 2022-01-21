@@ -9,12 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.wizeline.heroes.R
 import com.wizeline.heroes.RetrofitRepository
 import com.wizeline.heroes.databinding.FragmentCharactersBinding
 import com.wizeline.heroes.models.MarvelViewState
-import com.wizeline.heroes.ui.ExtensionFunctions.dismissDialog
-import com.wizeline.heroes.ui.ExtensionFunctions.isInternetAvailable
-import com.wizeline.heroes.ui.ExtensionFunctions.showDialog
+import com.wizeline.heroes.ui.FragmentExtensionFunctions.dismissDialog
+import com.wizeline.heroes.ui.FragmentExtensionFunctions.isInternetAvailable
+import com.wizeline.heroes.ui.FragmentExtensionFunctions.showDialog
 import com.wizeline.heroes.ui.abstract.PaginationScrollListener
 import com.wizeline.heroes.ui.adapters.CharacterRecyclerViewAdapter
 import com.wizeline.heroes.viewmodels.MarvelViewModel
@@ -92,12 +93,12 @@ class CharactersFragment : Fragment() {
         if (marvelViewState.isListUpdated) {
 
             if (mBinding.btnRetry.visibility == View.VISIBLE) mBinding.btnRetry.visibility = View.GONE
-            
+
             mCharacterRecyclerViewAdapter.addData(marvelViewState.characterList)
             mMarvelViewModel.listUpdated()
             changeLoadingState(false)
         }
-        if (marvelViewState.error.isNotEmpty()) {
+        if (marvelViewState.error?.isNotEmpty() == true) {
             Toast.makeText(context, "Error detectado: ${marvelViewState.error}", Toast.LENGTH_LONG)
                 .show()
             changeLoadingState(false)
@@ -115,7 +116,7 @@ class CharactersFragment : Fragment() {
             mMarvelViewModel.getCharacters(mRetrofitRepository, mOffset)
         } else{
             changeLoadingState(false)
-            Toast.makeText(context, "No internet connection, please connect to a internet Network", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, getString(R.string.no_interet_connection), Toast.LENGTH_LONG).show()
             mBinding.btnRetry.visibility = View.VISIBLE
         }
     }

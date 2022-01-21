@@ -1,9 +1,7 @@
 package com.wizeline.heroes.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.wizeline.heroes.Characters
 import com.wizeline.heroes.interfaces.IRepository
 import com.wizeline.heroes.models.Character
 import com.wizeline.heroes.models.MarvelViewState
@@ -21,7 +19,7 @@ class MarvelViewModel: ViewModel() {
     /** PERSONAL KEYS **/
     private val privateKey = "e6b903bda99ed895cd906b8f881e59388c611219"
     private val apikey = "1ace567a5fc6ae56303e8e340df61a16"
-    private val ts = System.currentTimeMillis().toString()
+    private val timestamp = System.currentTimeMillis().toString()
     private val compositeDisposable = CompositeDisposable()
 
     private var _marvelViewState = MutableLiveData(MarvelViewState(arrayListOf(), "", false))
@@ -30,24 +28,24 @@ class MarvelViewModel: ViewModel() {
 
     fun getCharacters(repository: IRepository, offset: Int){
 
-        val hash = (ts + privateKey + apikey).toMD5()
+        val hash = (timestamp + privateKey + apikey).toMD5()
 
         // Use disposable to prevent observable memory leaks
-        compositeDisposable.add(repository.getCharacters(ts, apikey, hash, offset).observeOn(AndroidSchedulers.mainThread())
+        compositeDisposable.add(repository.getCharacters(timestamp, apikey, hash, offset).observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe({
-                val currentViewState = marvelViewState.value!!
                 val marvelCharacterList = ArrayList<Character>()
-                it.data.results.forEach {
-                    marvelCharacterList.add(it)
+                it.data.results.forEach { character ->
+                    marvelCharacterList.add(character)
                 }
-                currentViewState.characterList = marvelCharacterList
-                currentViewState.isListUpdated = true
-                _marvelViewState.value = currentViewState
+                _marvelViewState.value = MarvelViewState(
+                    characterList =  marvelCharacterList,
+                    isListUpdated = true
+                )
             },{
-                val currentViewState = marvelViewState.value!!
-                currentViewState.error = it.message!!
-                _marvelViewState.value = currentViewState
+                _marvelViewState.value = MarvelViewState(
+                    error = it.message
+                )
                 it.printStackTrace()
             }))
     }
@@ -58,15 +56,15 @@ class MarvelViewModel: ViewModel() {
     }
 
     fun setLoading(loading: Boolean) {
-        val currentState = marvelViewState.value!!
-        currentState.isLoading = loading
-        _marvelViewState.value = currentState
+        _marvelViewState.value = MarvelViewState(
+            isLoading = loading
+        )
     }
 
     fun listUpdated() {
-        val currentState = marvelViewState.value!!
-        currentState.isListUpdated = false
-        _marvelViewState.value = currentState
+        _marvelViewState.value = MarvelViewState(
+            isListUpdated = false
+        )
     }
 
 }

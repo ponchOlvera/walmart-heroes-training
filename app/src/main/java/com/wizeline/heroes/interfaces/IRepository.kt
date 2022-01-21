@@ -8,21 +8,21 @@ import io.reactivex.Single
 interface IRepository {
 
     fun getCharacters(
-        ts: String,
+        timestamp: String,
         apikey: String,
         hash: String,
         offset: Int
     ): Single<Characters>
 
     fun getComicsByCharacter(
-        ts: String,
+        timestamp: String,
         apikey: String,
         hash: String,
         characterId: Int
     ): Single<ComicData>
 
     fun getSeriesByCharacter(
-        ts: String,
+        timestamp: String,
         apikey: String,
         hash: String,
         characterId: Int

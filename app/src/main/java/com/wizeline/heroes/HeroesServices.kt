@@ -1,8 +1,10 @@
 package com.wizeline.heroes
 
+import com.wizeline.heroes.Endpoint.CHARACTERS_URL
+import com.wizeline.heroes.Endpoint.COMICS_URL
+import com.wizeline.heroes.Endpoint.SERIES_URL
 import com.wizeline.heroes.models.ComicData
 import com.wizeline.heroes.models.SeriesData
-import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -10,25 +12,25 @@ import retrofit2.http.Query
 
 interface HeroesServices {
 
-    @GET("characters")
+    @GET(CHARACTERS_URL)
     fun characters(
-        @Query("ts") ts: String,
+        @Query("ts") timestamp: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Query("offset") offset: Int,
     ): Single<Characters>
 
-    @GET("characters/{characterId}/comics")
+    @GET(COMICS_URL)
     fun comicsByCharacter(
-        @Query("ts") ts: String,
+        @Query("ts") timestamp: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Path("characterId") characterId: Int,
     ): Single<ComicData>
 
-    @GET("characters/{characterId}/series")
+    @GET(SERIES_URL)
     fun seriesByCharacter(
-        @Query("ts") ts: String,
+        @Query("ts") timestamp: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Path("characterId") characterId: Int,

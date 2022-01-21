@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wizeline.heroes.R
 import com.wizeline.heroes.models.Character
+import com.wizeline.heroes.ui.CharacterMapper.mapCharacterForUi
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,6 +25,26 @@ class CharacterRecyclerViewAdapter(
         val tvCharacterName: TextView = view.findViewById(R.id.tvCharacterName)
         val tvCharacterDescription: TextView = view.findViewById(R.id.tvCharacterDescription)
         val tvAvailableComics: TextView = view.findViewById(R.id.tvAvailableComics)
+
+        fun bind(character: Character, context: Context){
+            val characterItem = mapCharacterForUi(character)
+            val description: String =
+                if (characterItem.isDescriptionString()) characterItem.description as String else context.getString(characterItem.description as Int)
+            tvCharacterName.text = character.name
+            tvCharacterDescription.text = description
+            tvAvailableComics.text = String.format(
+                Locale.US,
+                context.getString(R.string.available_comics),
+                character.comics.available
+            )
+
+            //Set image
+            Glide.with(context)
+                .load(characterItem.imgPath)
+                .centerCrop()
+                .placeholder(R.drawable.ic_superhero_placeholder)
+                .into(imgCharacter)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,24 +55,7 @@ class CharacterRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val character = list.get(position)
-        val description =
-            if (character.description.isEmpty()) context.getString(R.string.description_not_available) else character.description
-        val imagePath = "${character.thumbnail.path}.${character.thumbnail.extension}"
-        Log.w("onBindViewHolder()", imagePath)
-        holder.tvCharacterName.text = character.name
-        holder.tvCharacterDescription.text = description
-        holder.tvAvailableComics.text = String.format(
-            Locale.US,
-            context.getString(R.string.available_comics),
-            character.comics.available
-        )
-
-        //Set image
-        Glide.with(context)
-            .load(imagePath)
-            .centerCrop()
-            .placeholder(R.drawable.ic_superhero_placeholder)
-            .into(holder.imgCharacter)
+        holder.bind(character, context)
     }
 
     override fun getItemCount(): Int = list.size

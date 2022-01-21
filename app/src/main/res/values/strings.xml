@@ -7,4 +7,5 @@
     <string name="character_description">Character Description</string>
     <string name="description_not_available">No description available for this character</string>
     <string name="request_characters">Requesting superheros…</string>
+    <string name="no_interet_connection">No internet connection, please connect to a internet Network</string>
 </resources>

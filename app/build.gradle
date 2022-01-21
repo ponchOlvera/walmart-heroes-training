@@ -37,19 +37,31 @@ android {
 
 dependencies {
   def paging_version = "3.1.0"
+  def glide_version = "4.12.0"
+  def android_core_version = "1.7.0"
+  def appcompat_version = "1.4.1"
+  def material_version = "1.5.0"
+  def constraintLayout_version = "2.1.3"
+  def rxJava_version = "2.2.21"
+  def rxJava_android_version = "2.1.1"
+  def legacy_support_version = "1.0.0"
+  def junit_version = "4.13.2"
+  def junit_ext_version = "1.1.3"
+  def junit_espresso_version = "3.4.0"
+
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'androidx.core:core-ktx:1.7.0'
-  implementation 'androidx.appcompat:appcompat:1.4.1'
-  implementation 'com.google.android.material:material:1.4.0'
-  implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+  implementation "androidx.core:core-ktx:$android_core_version"
+  implementation "androidx.appcompat:appcompat:$appcompat_version"
+  implementation "com.google.android.material:material:$material_version"
+  implementation "androidx.constraintlayout:constraintlayout:$constraintLayout_version"
 
   // RecyclerView
   implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
   implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
   //Glide
-  implementation 'com.github.bumptech.glide:glide:4.12.0'
-  annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+  implementation "com.github.bumptech.glide:glide:$glide_version"
+  annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
   // Retrofit
   implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -57,11 +69,11 @@ dependencies {
   implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
   //Rx Java
-  implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
-  implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-  implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+  implementation "io.reactivex.rxjava2:rxjava:$rxJava_version"
+  implementation "io.reactivex.rxjava2:rxandroid:$rxJava_android_version"
+  implementation "androidx.legacy:legacy-support-v4:$legacy_support_version"
 
-  testImplementation 'junit:junit:4.13.2'
-  androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-  androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+  testImplementation "junit:junit:$junit_version"
+  androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+  androidTestImplementation "androidx.test.espresso:espresso-core:$junit_espresso_version"
 }
