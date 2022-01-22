@@ -24,20 +24,19 @@ class CharacterRecyclerViewAdapter(
 
     private class DiffCallback : DiffUtil.ItemCallback<Character>() {
         override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean {
             return oldItem == newItem
         }
-
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imgCharacter: ImageView = view.findViewById(R.id.imgCharacter)
-        val tvCharacterName: TextView = view.findViewById(R.id.tvCharacterName)
-        val tvCharacterDescription: TextView = view.findViewById(R.id.tvCharacterDescription)
-        val tvAvailableComics: TextView = view.findViewById(R.id.tvAvailableComics)
+        private val imgCharacter: ImageView = view.findViewById(R.id.imgCharacter)
+        private val tvCharacterName: TextView = view.findViewById(R.id.tvCharacterName)
+        private val tvCharacterDescription: TextView = view.findViewById(R.id.tvCharacterDescription)
+        private val tvAvailableComics: TextView = view.findViewById(R.id.tvAvailableComics)
 
         fun bind(character: Character, context: Context) {
             val characterItem = mapCharacterForUi(character)
