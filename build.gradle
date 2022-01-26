@@ -1,30 +1,32 @@
 buildscript {
 
-  ext.kotlin_version = "1.6.10"
-  ext.retrofit_version = "2.9.0"
+    ext.kotlin_version = "1.6.10"
+    ext.retrofit_version = "2.9.0"
+    ext.hilt_version = "2.38.1"
 
-  repositories {
-    google()
-    mavenCentral()
-  }
+    repositories {
+        google()
+        mavenCentral()
+    }
 
-  dependencies {
-    classpath "com.android.tools.build:gradle:4.1.3"
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-  }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.1.3"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath("com.google.dagger:hilt-android-gradle-plugin:$hilt_version")
+    }
 }
 
 allprojects {
-  repositories {
-    google()
-    mavenCentral()
-  }
+    repositories {
+        google()
+        mavenCentral()
+    }
 }
 
 task clean(type: Delete) {
-  delete rootProject.buildDir
+    delete rootProject.buildDir
 }
 
-ext{
-  recyclerViewVersion = '1.2.1'
+ext {
+    recyclerViewVersion = '1.2.1'
 }

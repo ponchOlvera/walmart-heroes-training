@@ -4,8 +4,9 @@ import com.wizeline.heroes.interfaces.IRepository
 import com.wizeline.heroes.models.ComicData
 import com.wizeline.heroes.models.SeriesData
 import io.reactivex.Single
+import javax.inject.Inject
 
-class RetrofitRepository: IRepository {
+class RetrofitRepository @Inject constructor(): IRepository {
 
     override fun getCharacters(
         timestamp: String,

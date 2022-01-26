@@ -35,7 +35,8 @@ class CharacterRecyclerViewAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val imgCharacter: ImageView = view.findViewById(R.id.imgCharacter)
         private val tvCharacterName: TextView = view.findViewById(R.id.tvCharacterName)
-        private val tvCharacterDescription: TextView = view.findViewById(R.id.tvCharacterDescription)
+        private val tvCharacterDescription: TextView =
+            view.findViewById(R.id.tvCharacterDescription)
         private val tvAvailableComics: TextView = view.findViewById(R.id.tvAvailableComics)
 
         fun bind(character: Character, context: Context) {
