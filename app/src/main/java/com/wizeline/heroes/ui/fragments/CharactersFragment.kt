@@ -2,16 +2,17 @@ package com.wizeline.heroes.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wizeline.heroes.R
-import com.wizeline.heroes.RetrofitRepository
 import com.wizeline.heroes.databinding.FragmentCharactersBinding
+import com.wizeline.heroes.interfaces.OnItemClickListener
 import com.wizeline.heroes.models.MarvelViewState
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.dismissDialog
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.isInternetAvailable
@@ -19,17 +20,18 @@ import com.wizeline.heroes.ui.FragmentExtensionFunctions.showDialog
 import com.wizeline.heroes.ui.abstract.PaginationScrollListener
 import com.wizeline.heroes.ui.adapters.CharacterRecyclerViewAdapter
 import com.wizeline.heroes.viewmodels.MarvelViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharactersFragment : Fragment() {
 
     private var _binding: FragmentCharactersBinding? = null
-    private var _marvelViewModel: MarvelViewModel? = null
     private var _characterRecyclerViewAdapter: CharacterRecyclerViewAdapter? = null
 
     private val mBinding get() = _binding!!
-    private val mMarvelViewModel get() = _marvelViewModel!!
+
+    val mMarvelViewModel: MarvelViewModel by viewModels()
     private val mCharacterRecyclerViewAdapter get() = _characterRecyclerViewAdapter!!
-    private val mRetrofitRepository = RetrofitRepository()
     private var mOffset: Int = 0
     private var isLastPage: Boolean = false
 
@@ -62,7 +64,6 @@ class CharactersFragment : Fragment() {
 
     private fun setupViewModel() {
         // Retrieving characters from retrofit
-        _marvelViewModel = ViewModelProvider(this).get(MarvelViewModel::class.java)
         mMarvelViewModel.marvelViewState.observe(viewLifecycleOwner, {
             if (it != null) {
                 renderViewState(it)
@@ -87,12 +88,24 @@ class CharactersFragment : Fragment() {
         })
         _characterRecyclerViewAdapter = CharacterRecyclerViewAdapter(arrayListOf(), context!!)
         mBinding.charactersRecyclerView.adapter = mCharacterRecyclerViewAdapter
+        mCharacterRecyclerViewAdapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val selectedItem = mCharacterRecyclerViewAdapter.list[position]
+                Log.i("onItemClick():", "Click on: $selectedItem")
+                val action = CharactersFragmentDirections.actionCharactersFragmentToDetailsFragment(
+                    selectedItem
+                )
+                findNavController().navigate(action)
+            }
+
+        })
     }
 
     private fun renderViewState(marvelViewState: MarvelViewState) {
         if (marvelViewState.isListUpdated) {
 
-            if (mBinding.btnRetry.visibility == View.VISIBLE) mBinding.btnRetry.visibility = View.GONE
+            if (mBinding.btnRetry.visibility == View.VISIBLE) mBinding.btnRetry.visibility =
+                View.GONE
 
             mCharacterRecyclerViewAdapter.addData(marvelViewState.characterList)
             mMarvelViewModel.listUpdated()
@@ -101,6 +114,7 @@ class CharactersFragment : Fragment() {
         if (marvelViewState.error?.isNotEmpty() == true) {
             Toast.makeText(context, "Error detectado: ${marvelViewState.error}", Toast.LENGTH_LONG)
                 .show()
+            mOffset -= OFFSET_INCREMENT
             changeLoadingState(false)
         }
         if (marvelViewState.isLoading) {
@@ -111,12 +125,13 @@ class CharactersFragment : Fragment() {
     }
 
     private fun refreshCharacters(offset: Int = 0) {
-        if(isInternetAvailable(context!!)){
+        if (isInternetAvailable(context!!)) {
             mOffset += offset
-            mMarvelViewModel.getCharacters(mRetrofitRepository, mOffset)
-        } else{
+            mMarvelViewModel.getCharacters(mOffset)
+        } else {
             changeLoadingState(false)
-            Toast.makeText(context, getString(R.string.no_interet_connection), Toast.LENGTH_LONG).show()
+            Toast.makeText(context, getString(R.string.no_interet_connection), Toast.LENGTH_LONG)
+                .show()
             mBinding.btnRetry.visibility = View.VISIBLE
         }
     }

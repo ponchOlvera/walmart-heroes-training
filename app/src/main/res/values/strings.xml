@@ -8,4 +8,8 @@
     <string name="description_not_available">No description available for this character</string>
     <string name="request_characters">Requesting superheros…</string>
     <string name="no_interet_connection">No internet connection, please connect to a internet Network</string>
+    <string name="search">Search</string>
+    <string name="characters">Characters</string>
+    <string name="comics_label">Comics</string>
+    <string name="series_label">Series</string>
 </resources>

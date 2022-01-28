@@ -1,5 +1,6 @@
 package com.wizeline.heroes.models
 
+import android.content.Context
 import com.wizeline.heroes.Thumbnail
 
 data class Character(
@@ -10,16 +11,17 @@ data class Character(
     val comics: ComicList,
     val thumbnail: Thumbnail,
     val resourceURI: String
-)
+): java.io.Serializable{
+}
 
 data class ComicList(
     val available: Int,
     val returned: Int,
     val collectionURI: String,
-    val comicList: List<Comic>
-)
+    val items: List<ComicSummary>
+): java.io.Serializable
 
-data class Comic(
+data class ComicSummary(
+    val name: String,
     val resourceURI: String,
-    val name: String
-)
+): java.io.Serializable

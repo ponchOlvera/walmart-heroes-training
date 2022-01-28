@@ -4,8 +4,9 @@ import com.wizeline.heroes.interfaces.IRepository
 import com.wizeline.heroes.models.ComicData
 import com.wizeline.heroes.models.SeriesData
 import io.reactivex.Single
+import javax.inject.Inject
 
-class RetrofitRepository: IRepository {
+class RetrofitRepository @Inject constructor(): IRepository {
 
     override fun getCharacters(
         timestamp: String,
@@ -22,7 +23,7 @@ class RetrofitRepository: IRepository {
         hash: String,
         characterId: Int
     ): Single<ComicData> {
-        return NetworkClient.getServices().comicsByCharacter(timestamp, apikey, hash, characterId)
+        return NetworkClient.getServices().comicsByCharacter(characterId, timestamp, apikey, hash)
     }
 
     override fun getSeriesByCharacter(
@@ -31,6 +32,6 @@ class RetrofitRepository: IRepository {
         hash: String,
         characterId: Int
     ): Single<SeriesData> {
-        return NetworkClient.getServices().seriesByCharacter(timestamp, apikey, hash, characterId)
+        return NetworkClient.getServices().seriesByCharacter(characterId, timestamp, apikey, hash)
     }
 }

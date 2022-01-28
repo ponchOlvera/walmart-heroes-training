@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/marvel_navigation"
+    app:startDestination="@id/characters_dest">
+    <fragment
+        android:id="@+id/characters_dest"
+        android:name="com.wizeline.heroes.ui.fragments.CharactersFragment"
+        android:label="Characters"
+        tools:layout="@layout/fragment_characters" >
+        <action
+            android:id="@+id/action_charactersFragment_to_detailsFragment"
+            app:destination="@id/details_dest" />
+        <action
+            android:id="@+id/action_characters_dest_to_searchFragment"
+            app:destination="@id/search_dest" />
+    </fragment>
+    <fragment
+        android:id="@+id/details_dest"
+        android:name="com.wizeline.heroes.ui.fragments.DetailsFragment"
+        android:label="Character Details"
+        tools:layout="@layout/fragment_details">
+
+        <argument
+            android:name="marvelCharacter"
+            app:argType="com.wizeline.heroes.models.Character"/>
+    </fragment>
+    <fragment
+        android:id="@+id/search_dest"
+        android:name="com.wizeline.heroes.ui.fragments.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_details_dest"
+            app:destination="@id/details_dest" />
+    </fragment>
+</navigation>

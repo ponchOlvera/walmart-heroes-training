@@ -7,6 +7,7 @@ import com.wizeline.heroes.models.Character
 object CharacterMapper {
     fun mapCharacterForUi(character: Character): CharacterItem{
         return CharacterItem(
+            character.id,
             character.name,
             getDescription(character.description),
             character.comics.available,
@@ -25,6 +26,7 @@ object CharacterMapper {
 }
 
 data class CharacterItem(
+    val id: Int,
     val name: String,
     val description: Any,
     val numOfComics: Int,
