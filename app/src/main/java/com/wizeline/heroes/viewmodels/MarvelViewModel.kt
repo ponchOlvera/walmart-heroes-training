@@ -2,7 +2,6 @@ package com.wizeline.heroes.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.wizeline.heroes.interfaces.IMarvelFragmentViewModel
 import com.wizeline.heroes.models.MarvelViewState
 import com.wizeline.heroes.usecases.GetMarvelCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MarvelViewModel @Inject constructor(val getMarvelCharactersUseCase: GetMarvelCharactersUseCase) :
-    ViewModel(), IMarvelFragmentViewModel {
+    ViewModel(){
 
     private var _marvelViewState = MutableLiveData(MarvelViewState(arrayListOf(), "", false))
     val marvelViewState get() = _marvelViewState
@@ -38,7 +37,7 @@ class MarvelViewModel @Inject constructor(val getMarvelCharactersUseCase: GetMar
         super.onCleared()
     }
 
-    override fun setLoading(loading: Boolean) {
+    fun setLoading(loading: Boolean) {
         _marvelViewState.value = MarvelViewState(
             isLoading = loading
         )

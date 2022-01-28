@@ -1,31 +1,29 @@
 package com.wizeline.heroes.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.wizeline.heroes.MainActivity
 import com.wizeline.heroes.R
 import com.wizeline.heroes.databinding.FragmentDetailsBinding
-import com.wizeline.heroes.di.MarvelDetails
 import com.wizeline.heroes.getDescription
-import com.wizeline.heroes.models.*
+import com.wizeline.heroes.models.ComicDetails
+import com.wizeline.heroes.models.IMarvelDetailsType
+import com.wizeline.heroes.models.MarvelCharacterDetailsViewState
+import com.wizeline.heroes.models.SeriesDetails
 import com.wizeline.heroes.ui.CharacterItem
-import com.wizeline.heroes.ui.CharacterMapper
 import com.wizeline.heroes.ui.CharacterMapper.mapCharacterForUi
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.dismissDialog
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.showDialog
 import com.wizeline.heroes.ui.adapters.CharacterDetailsRecyclerAdapter
 import com.wizeline.heroes.viewmodels.MarvelDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {

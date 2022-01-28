@@ -8,20 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.wizeline.heroes.databinding.FragmentSearchBinding
-import com.wizeline.heroes.di.MarvelDetails
 import com.wizeline.heroes.models.MarvelCharacterDetailsViewState
 import com.wizeline.heroes.viewmodels.MarvelDetailsViewModel
-import com.wizeline.heroes.viewmodels.MarvelDetailsViewModelFactory
-import javax.inject.Inject
 
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val mBinding: FragmentSearchBinding get() = _binding!!
 
-    @MarvelDetails
-    @Inject
-    lateinit var marvelViewModelFactory: MarvelDetailsViewModelFactory
     var mMarvelViewModel: MarvelDetailsViewModel? = null
 
     override fun onCreateView(
@@ -37,10 +31,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupViewModel(){
-        val marvelViewModel: MarvelDetailsViewModel by viewModels {
-            marvelViewModelFactory
-        }
-        mMarvelViewModel = marvelViewModel
         mMarvelViewModel?.marvelDetailsViewState?.observe(viewLifecycleOwner, {
             if (it != null) {
                 renderViewState(it)
