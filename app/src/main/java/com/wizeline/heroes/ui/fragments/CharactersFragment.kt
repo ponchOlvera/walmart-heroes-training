@@ -8,12 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wizeline.heroes.R
 import com.wizeline.heroes.databinding.FragmentCharactersBinding
-import com.wizeline.heroes.di.MarvelCharacters
 import com.wizeline.heroes.interfaces.OnItemClickListener
 import com.wizeline.heroes.models.MarvelViewState
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.dismissDialog
@@ -21,9 +19,8 @@ import com.wizeline.heroes.ui.FragmentExtensionFunctions.isInternetAvailable
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.showDialog
 import com.wizeline.heroes.ui.abstract.PaginationScrollListener
 import com.wizeline.heroes.ui.adapters.CharacterRecyclerViewAdapter
-import com.wizeline.heroes.viewmodels.IMarvelViewModel
+import com.wizeline.heroes.viewmodels.MarvelViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CharactersFragment : Fragment() {
@@ -33,10 +30,7 @@ class CharactersFragment : Fragment() {
 
     private val mBinding get() = _binding!!
 
-    @MarvelCharacters
-    @Inject
-    lateinit var marvelViewModelFactory: ViewModelProvider.Factory
-    var mMarvelViewModel: IMarvelViewModel? = null
+    val mMarvelViewModel: MarvelViewModel by viewModels()
     private val mCharacterRecyclerViewAdapter get() = _characterRecyclerViewAdapter!!
     private var mOffset: Int = 0
     private var isLastPage: Boolean = false
@@ -70,11 +64,7 @@ class CharactersFragment : Fragment() {
 
     private fun setupViewModel() {
         // Retrieving characters from retrofit
-        val marvelViewModel: IMarvelViewModel by viewModels {
-            marvelViewModelFactory
-        }
-        mMarvelViewModel = marvelViewModel
-        mMarvelViewModel?.marvelViewState?.observe(viewLifecycleOwner, {
+        mMarvelViewModel.marvelViewState.observe(viewLifecycleOwner, {
             if (it != null) {
                 renderViewState(it)
             }
@@ -88,7 +78,7 @@ class CharactersFragment : Fragment() {
         ) {
             override fun isLastPage(): Boolean = isLastPage
 
-            override fun isLoading(): Boolean = mMarvelViewModel?.marvelViewState?.value!!.isLoading
+            override fun isLoading(): Boolean = mMarvelViewModel.marvelViewState.value!!.isLoading
 
             override fun loadMoreItems() {
                 Log.w(this::class.java.toString(), "LoadMoreItems")
@@ -98,11 +88,13 @@ class CharactersFragment : Fragment() {
         })
         _characterRecyclerViewAdapter = CharacterRecyclerViewAdapter(arrayListOf(), context!!)
         mBinding.charactersRecyclerView.adapter = mCharacterRecyclerViewAdapter
-        mCharacterRecyclerViewAdapter.setOnItemClickListener(object: OnItemClickListener{
+        mCharacterRecyclerViewAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val selectedItem = mCharacterRecyclerViewAdapter.list[position]
                 Log.i("onItemClick():", "Click on: $selectedItem")
-                val action = CharactersFragmentDirections.actionCharactersFragmentToDetailsFragment(selectedItem)
+                val action = CharactersFragmentDirections.actionCharactersFragmentToDetailsFragment(
+                    selectedItem
+                )
                 findNavController().navigate(action)
             }
 
@@ -116,7 +108,7 @@ class CharactersFragment : Fragment() {
                 View.GONE
 
             mCharacterRecyclerViewAdapter.addData(marvelViewState.characterList)
-            mMarvelViewModel?.listUpdated()
+            mMarvelViewModel.listUpdated()
             changeLoadingState(false)
         }
         if (marvelViewState.error?.isNotEmpty() == true) {
@@ -135,7 +127,7 @@ class CharactersFragment : Fragment() {
     private fun refreshCharacters(offset: Int = 0) {
         if (isInternetAvailable(context!!)) {
             mOffset += offset
-            mMarvelViewModel?.getCharacters(mOffset)
+            mMarvelViewModel.getCharacters(mOffset)
         } else {
             changeLoadingState(false)
             Toast.makeText(context, getString(R.string.no_interet_connection), Toast.LENGTH_LONG)
@@ -145,7 +137,7 @@ class CharactersFragment : Fragment() {
     }
 
     private fun changeLoadingState(loading: Boolean) {
-        mMarvelViewModel?.setLoading(loading)
+        mMarvelViewModel.setLoading(loading)
     }
 
     companion object {

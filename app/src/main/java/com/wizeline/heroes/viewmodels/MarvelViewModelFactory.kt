@@ -11,6 +11,6 @@ class MarvelViewModelFactory @Inject constructor(val getMarvelCharactersUseCase:
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return IMarvelViewModel(getMarvelCharactersUseCase) as T
+        return MarvelViewModel(getMarvelCharactersUseCase) as T
     }
 }

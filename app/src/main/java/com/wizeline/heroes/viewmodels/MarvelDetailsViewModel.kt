@@ -1,10 +1,8 @@
 package com.wizeline.heroes.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.wizeline.heroes.interfaces.IMarvelFragmentViewModel
-import com.wizeline.heroes.models.Character
 import com.wizeline.heroes.models.ComicDetails
 import com.wizeline.heroes.models.MarvelCharacterDetailsViewState
 import com.wizeline.heroes.models.SeriesDetails
@@ -46,6 +44,11 @@ class MarvelDetailsViewModel @Inject constructor(val characterDetailsUseCase: Ma
             .also {
                 compositeDisposable.add(it)
             }
+    }
+
+    override fun onCleared() {
+        compositeDisposable.clear()
+        super.onCleared()
     }
 
     override fun setLoading(loading: Boolean) {

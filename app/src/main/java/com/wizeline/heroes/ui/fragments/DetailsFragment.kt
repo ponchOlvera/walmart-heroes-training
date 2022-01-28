@@ -30,18 +30,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
-    private val TAG = this::class.java.toString()
-
     private var _binding: FragmentDetailsBinding? = null
     private val mBinding: FragmentDetailsBinding get() = _binding!!
 
     private lateinit var comicDetailsAdapter: CharacterDetailsRecyclerAdapter
     private lateinit var seriesDetailsAdapter: CharacterDetailsRecyclerAdapter
 
-    @MarvelDetails
-    @Inject
-    lateinit var marvelViewModelFactory: ViewModelProvider.Factory
-    var mMarvelViewModel: MarvelDetailsViewModel? = null
+    private val mMarvelViewModel: MarvelDetailsViewModel by viewModels()
 
     private lateinit var mCharacter: CharacterItem
 
@@ -86,24 +81,22 @@ class DetailsFragment : Fragment() {
     }
 
     private fun setupViewModel(){
-        val marvelViewModel: MarvelDetailsViewModel by viewModels {
-            marvelViewModelFactory
-        }
-        mMarvelViewModel = marvelViewModel
-        mMarvelViewModel?.marvelDetailsViewState?.observe(viewLifecycleOwner, {
+        mMarvelViewModel.marvelDetailsViewState.observe(viewLifecycleOwner, {
             if (it != null) {
                 renderViewState(it)
             }
         })
 
-        mMarvelViewModel?.getCharacterDetails(mCharacter.id)
+        mMarvelViewModel.getCharacterDetails(mCharacter.id)
     }
 
     private fun renderViewState(detailsViewState: MarvelCharacterDetailsViewState) {
+
         if (detailsViewState.comics.isNotEmpty()){
             addDataToRecyclerView(detailsViewState.comics)
             changeLoadingState(false)
         }
+
         if (detailsViewState.series.isNotEmpty()){
             addDataToRecyclerView(detailsViewState.series)
             changeLoadingState(false)
@@ -130,7 +123,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun changeLoadingState(loading: Boolean) {
-        mMarvelViewModel?.setLoading(loading)
+        mMarvelViewModel.setLoading(loading)
     }
 
     companion object {
