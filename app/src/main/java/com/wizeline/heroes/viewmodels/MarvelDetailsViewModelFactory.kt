@@ -2,15 +2,15 @@ package com.wizeline.heroes.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.wizeline.heroes.usecases.GetMarvelCharactersUseCase
+import com.wizeline.heroes.usecases.MarvelCharacterDetailsUseCase
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MarvelViewModelFactory @Inject constructor(val getMarvelCharactersUseCase: GetMarvelCharactersUseCase) :
+class MarvelDetailsViewModelFactory @Inject constructor(val marvelCharacterDetailsUseCase: MarvelCharacterDetailsUseCase) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return IMarvelViewModel(getMarvelCharactersUseCase) as T
+        return MarvelDetailsViewModel(marvelCharacterDetailsUseCase) as T
     }
 }

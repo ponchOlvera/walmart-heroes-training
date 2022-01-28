@@ -23,7 +23,7 @@ class RetrofitRepository @Inject constructor(): IRepository {
         hash: String,
         characterId: Int
     ): Single<ComicData> {
-        return NetworkClient.getServices().comicsByCharacter(timestamp, apikey, hash, characterId)
+        return NetworkClient.getServices().comicsByCharacter(characterId, timestamp, apikey, hash)
     }
 
     override fun getSeriesByCharacter(
@@ -32,6 +32,6 @@ class RetrofitRepository @Inject constructor(): IRepository {
         hash: String,
         characterId: Int
     ): Single<SeriesData> {
-        return NetworkClient.getServices().seriesByCharacter(timestamp, apikey, hash, characterId)
+        return NetworkClient.getServices().seriesByCharacter(characterId, timestamp, apikey, hash)
     }
 }

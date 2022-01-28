@@ -22,17 +22,17 @@ interface HeroesServices {
 
     @GET(COMICS_URL)
     fun comicsByCharacter(
+        @Path("characterId") characterId: Int,
         @Query("ts") timestamp: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
-        @Path("characterId") characterId: Int,
     ): Single<ComicData>
 
     @GET(SERIES_URL)
     fun seriesByCharacter(
+        @Path("characterId") characterId: Int,
         @Query("ts") timestamp: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
-        @Path("characterId") characterId: Int,
     ): Single<SeriesData>
 }

@@ -2,26 +2,26 @@ package com.wizeline.heroes.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wizeline.heroes.R
 import com.wizeline.heroes.databinding.FragmentCharactersBinding
-import com.wizeline.heroes.di.Retrofit
-import com.wizeline.heroes.interfaces.IRepository
+import com.wizeline.heroes.di.MarvelCharacters
+import com.wizeline.heroes.interfaces.OnItemClickListener
 import com.wizeline.heroes.models.MarvelViewState
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.dismissDialog
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.isInternetAvailable
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.showDialog
 import com.wizeline.heroes.ui.abstract.PaginationScrollListener
 import com.wizeline.heroes.ui.adapters.CharacterRecyclerViewAdapter
-import com.wizeline.heroes.usecases.GetMarvelCharactersUseCase
-import com.wizeline.heroes.viewmodels.MarvelViewModel
-import com.wizeline.heroes.viewmodels.MarvelViewModelFactory
+import com.wizeline.heroes.viewmodels.IMarvelViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -33,9 +33,10 @@ class CharactersFragment : Fragment() {
 
     private val mBinding get() = _binding!!
 
+    @MarvelCharacters
     @Inject
-    lateinit var marvelViewModelFactory: MarvelViewModelFactory
-    var mMarvelViewModel: MarvelViewModel? = null
+    lateinit var marvelViewModelFactory: ViewModelProvider.Factory
+    var mMarvelViewModel: IMarvelViewModel? = null
     private val mCharacterRecyclerViewAdapter get() = _characterRecyclerViewAdapter!!
     private var mOffset: Int = 0
     private var isLastPage: Boolean = false
@@ -69,7 +70,7 @@ class CharactersFragment : Fragment() {
 
     private fun setupViewModel() {
         // Retrieving characters from retrofit
-        val marvelViewModel: MarvelViewModel by viewModels {
+        val marvelViewModel: IMarvelViewModel by viewModels {
             marvelViewModelFactory
         }
         mMarvelViewModel = marvelViewModel
@@ -97,6 +98,15 @@ class CharactersFragment : Fragment() {
         })
         _characterRecyclerViewAdapter = CharacterRecyclerViewAdapter(arrayListOf(), context!!)
         mBinding.charactersRecyclerView.adapter = mCharacterRecyclerViewAdapter
+        mCharacterRecyclerViewAdapter.setOnItemClickListener(object: OnItemClickListener{
+            override fun onItemClick(position: Int) {
+                val selectedItem = mCharacterRecyclerViewAdapter.list[position]
+                Log.i("onItemClick():", "Click on: $selectedItem")
+                val action = CharactersFragmentDirections.actionCharactersFragmentToDetailsFragment(selectedItem)
+                findNavController().navigate(action)
+            }
+
+        })
     }
 
     private fun renderViewState(marvelViewState: MarvelViewState) {
@@ -112,6 +122,7 @@ class CharactersFragment : Fragment() {
         if (marvelViewState.error?.isNotEmpty() == true) {
             Toast.makeText(context, "Error detectado: ${marvelViewState.error}", Toast.LENGTH_LONG)
                 .show()
+            mOffset -= OFFSET_INCREMENT
             changeLoadingState(false)
         }
         if (marvelViewState.isLoading) {
