@@ -12,4 +12,7 @@
     <string name="characters">Characters</string>
     <string name="comics_label">Comics</string>
     <string name="series_label">Series</string>
+    <string name="btn_retry">Retry</string>
+    <string name="label_search">Search</string>
+    <string name="msg_no_characters_available">No more available characters for current search</string>
 </resources>

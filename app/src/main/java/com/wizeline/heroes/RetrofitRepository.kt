@@ -6,15 +6,16 @@ import com.wizeline.heroes.models.SeriesData
 import io.reactivex.Single
 import javax.inject.Inject
 
-class RetrofitRepository @Inject constructor(): IRepository {
+class RetrofitRepository @Inject constructor() : IRepository {
 
     override fun getCharacters(
         timestamp: String,
         apikey: String,
         hash: String,
-        offset: Int
+        offset: Int,
+        startsWith: String?
     ): Single<Characters> {
-        return NetworkClient.getServices().characters(timestamp, apikey, hash, offset)
+        return NetworkClient.getServices().characters(timestamp, apikey, hash, offset, startsWith)
     }
 
     override fun getComicsByCharacter(

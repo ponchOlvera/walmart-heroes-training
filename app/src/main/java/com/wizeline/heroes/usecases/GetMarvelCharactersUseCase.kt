@@ -22,10 +22,10 @@ class GetMarvelCharactersUseCase @Inject constructor(
     private val timestamp = System.currentTimeMillis().toString()
 
     // TODO: 24/01/22 Delete livedata instance and return single response to ViewModel.
-    operator fun invoke(offset: Int): Single<List<Character>> {
+    operator fun invoke(offset: Int, startsWith: String?): Single<List<Character>> {
         val hash = (timestamp + PRIVATE_KEY + API_KEY).toMD5()
         // Use disposable to prevent observable memory leaks
-        return repository.getCharacters(timestamp, API_KEY, hash, offset)
+        return repository.getCharacters(timestamp, API_KEY, hash, offset, startsWith)
             .observeOn(
                 AndroidSchedulers.mainThread()
             )

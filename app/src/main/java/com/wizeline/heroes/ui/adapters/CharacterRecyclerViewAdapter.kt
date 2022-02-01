@@ -16,7 +16,6 @@ import com.wizeline.heroes.interfaces.OnItemClickListener
 import com.wizeline.heroes.models.Character
 import com.wizeline.heroes.ui.CharacterMapper.mapCharacterForUi
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CharacterRecyclerViewAdapter(
     val list: ArrayList<Character>,
@@ -82,6 +81,12 @@ class CharacterRecyclerViewAdapter(
 
     override fun getItemCount(): Int = list.size
 
+    fun resetData() {
+        val oldSize = list.size
+        this.list.clear()
+        notifyItemRangeRemoved(0, oldSize)
+    }
+
     fun addData(list: List<Character>) {
         val size = this.list.size
         this.list.addAll(list)
@@ -89,7 +94,7 @@ class CharacterRecyclerViewAdapter(
         notifyItemRangeChanged(size, sizeNew)
     }
 
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
         this.onItemClickListener = onItemClickListener
     }
 

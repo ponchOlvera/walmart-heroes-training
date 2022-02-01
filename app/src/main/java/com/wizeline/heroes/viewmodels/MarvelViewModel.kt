@@ -10,20 +10,26 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MarvelViewModel @Inject constructor(val getMarvelCharactersUseCase: GetMarvelCharactersUseCase) :
-    ViewModel(){
+    ViewModel() {
 
     private var _marvelViewState = MutableLiveData(MarvelViewState(arrayListOf(), "", false))
+    private var searchQuery: String? = null
+    private var clearRecyclerData: Boolean = false
     val marvelViewState get() = _marvelViewState
 
     private val compositeDisposable = CompositeDisposable()
 
     fun getCharacters(offset: Int) {
-        compositeDisposable.add(getMarvelCharactersUseCase(offset).subscribe({
+        compositeDisposable.add(getMarvelCharactersUseCase(offset, searchQuery).subscribe({
             val marvelCharacterList = it
             _marvelViewState.value = MarvelViewState(
                 characterList = marvelCharacterList,
+                clearRecyclerData = clearRecyclerData,
                 isListUpdated = true
             )
+            if (clearRecyclerData) {
+                clearRecyclerData = false
+            }
         }, {
             _marvelViewState.value = MarvelViewState(
                 error = it.message
@@ -46,6 +52,17 @@ class MarvelViewModel @Inject constructor(val getMarvelCharactersUseCase: GetMar
     fun listUpdated() {
         _marvelViewState.value = MarvelViewState(
             isListUpdated = false
+        )
+    }
+
+    fun includeSearchQuery(query: String) {
+        searchQuery = if (query.isNotEmpty()) query else null
+        clearRecyclerData = true
+    }
+
+    fun togglePagination(enablePagination: Boolean) {
+        _marvelViewState.value = MarvelViewState(
+            enablePagination = enablePagination
         )
     }
 

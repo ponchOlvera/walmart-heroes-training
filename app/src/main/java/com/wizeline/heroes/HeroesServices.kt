@@ -18,6 +18,7 @@ interface HeroesServices {
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Query("offset") offset: Int,
+        @Query("nameStartsWith") startsWith: String?,
     ): Single<Characters>
 
     @GET(COMICS_URL)

@@ -11,7 +11,8 @@ interface IRepository {
         timestamp: String,
         apikey: String,
         hash: String,
-        offset: Int
+        offset: Int,
+        startsWith: String?,
     ): Single<Characters>
 
     fun getComicsByCharacter(
