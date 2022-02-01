@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.wizeline.heroes.MainActivity
+import com.wizeline.heroes.ui.activities.MainActivity
 import com.wizeline.heroes.R
 import com.wizeline.heroes.databinding.FragmentDetailsBinding
 import com.wizeline.heroes.getDescription
