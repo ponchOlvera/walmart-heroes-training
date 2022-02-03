@@ -74,6 +74,8 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.logggingInterceptorVersion"
+    implementation "com.google.code.gson:gson:$rootProject.googleGsonVersion"
 
     //Rx Java
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
@@ -87,16 +89,17 @@ dependencies {
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.legacy:legacy-support-v4:$rootProject.legacySupportVersion"
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:29.0.4')
+    implementation platform("com.google.firebase:firebase-bom:$rootProject.firebaseBomVersion")
     // Declare the dependencies for the desired Firebase products
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-config-ktx'
 
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "com.google.truth:truth:$rootProject.googleTruth"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.junitExtVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.junitEspressoVersion"
 }

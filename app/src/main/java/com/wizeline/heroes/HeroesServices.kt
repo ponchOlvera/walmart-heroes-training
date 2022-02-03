@@ -6,6 +6,7 @@ import com.wizeline.heroes.Endpoint.SERIES_URL
 import com.wizeline.heroes.models.ComicData
 import com.wizeline.heroes.models.SeriesData
 import io.reactivex.Single
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -13,13 +14,13 @@ import retrofit2.http.Query
 interface HeroesServices {
 
     @GET(CHARACTERS_URL)
-    fun characters(
+    suspend fun characters(
         @Query("ts") timestamp: String,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Query("offset") offset: Int,
         @Query("nameStartsWith") startsWith: String?,
-    ): Single<Characters>
+    ): Response<Characters>
 
     @GET(COMICS_URL)
     fun comicsByCharacter(
