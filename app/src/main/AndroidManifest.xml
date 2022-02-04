@@ -14,16 +14,19 @@
         android:theme="@style/Theme.Heroes"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.MainActivity"
+            android:exported="true">
+
+            <nav-graph android:value="@navigation/marvel_navigation" />
+        </activity>
+        <activity android:name=".ui.activities.SplashActivity"
+            android:theme="@style/SplashTheme"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <nav-graph android:value="@navigation/marvel_navigation" />
         </activity>
     </application>
 

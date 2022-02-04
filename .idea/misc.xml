@@ -4,8 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2609375" />
+        <entry key="app/src/main/res/drawable/bg_gradient.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_icons8_avengers.xml" value="0.4197916666666667" />
+        <entry key="app/src/main/res/drawable/ic_icons8_search.xml" value="0.4197916666666667" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2609375" />
         <entry key="app/src/main/res/drawable/ic_superhero_placeholder.xml" value="0.2609375" />
+        <entry key="app/src/main/res/drawable/splash_background.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/fragment_characters.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/fragment_details.xml" value="0.23125" />
@@ -14,6 +18,7 @@
         <entry key="app/src/main/res/layout/progress_bar_dialog.xml" value="0.24479166666666666" />
         <entry key="app/src/main/res/layout/recycler_view_character_item.xml" value="0.45" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.23177083333333334" />
+        <entry key="app/src/main/res/xml/remote_config_faults.xml" value="0.23489583333333333" />
       </map>
     </option>
   </component>

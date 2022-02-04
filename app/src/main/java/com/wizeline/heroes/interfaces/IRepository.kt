@@ -4,15 +4,17 @@ import com.wizeline.heroes.Characters
 import com.wizeline.heroes.models.ComicData
 import com.wizeline.heroes.models.SeriesData
 import io.reactivex.Single
+import retrofit2.Response
 
 interface IRepository {
 
-    fun getCharacters(
+    suspend fun getCharacters(
         timestamp: String,
         apikey: String,
         hash: String,
-        offset: Int
-    ): Single<Characters>
+        offset: Int,
+        startsWith: String?,
+    ): Response<Characters>
 
     fun getComicsByCharacter(
         timestamp: String,

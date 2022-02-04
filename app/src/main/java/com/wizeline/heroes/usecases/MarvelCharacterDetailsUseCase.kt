@@ -35,7 +35,7 @@ class MarvelCharacterDetailsUseCase @Inject constructor(val repository: IReposit
         }
     }
 
-    fun getCharacterComics(characterId: Int): Single<List<Comic>>{
+    private fun getCharacterComics(characterId: Int): Single<List<Comic>>{
         return repository.getComicsByCharacter(timestamp, API_KEY, hash, characterId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -44,7 +44,7 @@ class MarvelCharacterDetailsUseCase @Inject constructor(val repository: IReposit
             }
     }
 
-    fun getCharacterSeries(characterId: Int): Single<List<Series>>{
+    private fun getCharacterSeries(characterId: Int): Single<List<Series>>{
         return repository.getSeriesByCharacter(timestamp, API_KEY, hash, characterId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
