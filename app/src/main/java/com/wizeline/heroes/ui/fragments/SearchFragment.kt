@@ -24,7 +24,6 @@ import com.wizeline.heroes.ui.abstract.PaginationScrollListener
 import com.wizeline.heroes.ui.adapters.CharacterRecyclerViewAdapter
 import com.wizeline.heroes.viewmodels.MarvelViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -62,7 +61,6 @@ class SearchFragment : Fragment() {
 
     private fun setupOnSearch() {
         mBinding.etCharacterSearch.addTextChangedListener {
-            Toast.makeText(context, "Text: ${it.toString()}", Toast.LENGTH_SHORT).show()
             searchCharacters()
         }
     }
