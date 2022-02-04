@@ -1,25 +1,27 @@
 package com.wizeline.heroes.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.wizeline.heroes.di.CoroutineDispatcherProvider
 import com.wizeline.heroes.models.MarvelViewState
 import com.wizeline.heroes.usecases.GetMarvelCharactersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.internal.util.HalfSerializer.onError
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @HiltViewModel
-class MarvelViewModel @Inject constructor(val getMarvelCharactersUseCase: GetMarvelCharactersUseCase) :
+class MarvelViewModel @Inject constructor(
+    val getMarvelCharactersUseCase: GetMarvelCharactersUseCase,
+    val dispatcher: CoroutineDispatcherProvider
+) :
     ViewModel() {
 
     private var _marvelViewState = MutableLiveData(MarvelViewState(arrayListOf(), "", false))
     private var searchQuery: String? = null
     private var clearRecyclerData: Boolean = false
     private var job: Job? = null
-    val marvelViewState get() = _marvelViewState
+    val marvelViewState: LiveData<MarvelViewState> get() = _marvelViewState
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
@@ -32,9 +34,9 @@ class MarvelViewModel @Inject constructor(val getMarvelCharactersUseCase: GetMar
         )
     }
 
-    fun getCharacters(offset: Int) {
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = getMarvelCharactersUseCase(offset, searchQuery)
+    fun getCharacters(offset: Int, timestamp: String, hash: String) {
+        job = CoroutineScope(dispatcher.name + exceptionHandler).launch {
+            val response = getMarvelCharactersUseCase(offset, searchQuery, timestamp, hash)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     val marvelCharactersList = response.body()?.data?.results ?: listOf()

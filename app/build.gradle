@@ -98,8 +98,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-config-ktx'
 
+    // Testing
     testImplementation "junit:junit:$rootProject.junitVersion"
-    testImplementation "com.google.truth:truth:$rootProject.googleTruth"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.androidArchCoreVersion"
+    testImplementation "com.google.truth:truth:$rootProject.googleTruthVersion"
+    testImplementation "io.mockk:mockk:$rootProject.mockkVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$rootProject.koltinxCoroutinesVersion"
     androidTestImplementation "androidx.test.ext:junit:$rootProject.junitExtVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.junitEspressoVersion"
 }

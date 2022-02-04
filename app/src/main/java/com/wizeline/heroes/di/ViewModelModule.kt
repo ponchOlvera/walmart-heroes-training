@@ -8,18 +8,26 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
-@InstallIn(ActivityComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 class ViewModelModule {
 
-    @Provides
-    fun provideMarvelViewModel(getMarvelCharactersUseCase: GetMarvelCharactersUseCase): MarvelViewModel{
-        return MarvelViewModel(getMarvelCharactersUseCase)
+    /*@Provides
+    fun provideMarvelViewModel(getMarvelCharactersUseCase: GetMarvelCharactersUseCase, dispatcher: CoroutineDispatcherProvider): MarvelViewModel{
+        return MarvelViewModel(getMarvelCharactersUseCase, dispatcher)
     }
 
     @Provides
     fun provideMarvelDetailsViewModel(marvelCharacterDetailsUseCase: MarvelCharacterDetailsUseCase): MarvelDetailsViewModel{
         return MarvelDetailsViewModel(marvelCharacterDetailsUseCase)
+    }*/
+
+    @Provides
+    fun provideCoroutineDispatcherProvider(): CoroutineDispatcherProvider{
+        return CoroutineDispatcherProvider(Dispatchers.IO)
     }
 }

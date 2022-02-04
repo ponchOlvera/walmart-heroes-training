@@ -11,10 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.wizeline.heroes.Endpoint
 import com.wizeline.heroes.R
 import com.wizeline.heroes.databinding.FragmentSearchBinding
 import com.wizeline.heroes.interfaces.OnItemClickListener
 import com.wizeline.heroes.models.MarvelViewState
+import com.wizeline.heroes.toMD5
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.dismissDialog
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.isInternetAvailable
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.showDialog
@@ -22,6 +24,7 @@ import com.wizeline.heroes.ui.abstract.PaginationScrollListener
 import com.wizeline.heroes.ui.adapters.CharacterRecyclerViewAdapter
 import com.wizeline.heroes.viewmodels.MarvelViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -157,8 +160,10 @@ class SearchFragment : Fragment() {
 
     private fun refreshCharacters(offset: Int = 0) {
         if (isInternetAvailable(context!!)) {
+            val timestamp = System.currentTimeMillis().toString()
+            val hash = (timestamp + Endpoint.PRIVATE_KEY + Endpoint.API_KEY).toMD5()
             mOffset += offset
-            mMarvelViewModel.getCharacters(mOffset)
+            mMarvelViewModel.getCharacters(mOffset, timestamp, hash)
         } else {
             changeLoadingState(false)
             Toast.makeText(context, getString(R.string.no_interet_connection), Toast.LENGTH_LONG)
