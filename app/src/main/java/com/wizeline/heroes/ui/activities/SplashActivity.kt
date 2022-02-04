@@ -32,13 +32,11 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkAppIsBlocked() {
-
         remoteConfig.fetchAndActivate()
             .addOnCompleteListener(this) { task ->
-                var isAppBlocked: Boolean = remoteConfig[IS_APP_BLOCKED_KEY].asBoolean()
+                val isAppBlocked: Boolean = remoteConfig[IS_APP_BLOCKED_KEY].asBoolean()
                 if (task.isSuccessful) {
                     val updated = task.result
-                    isAppBlocked = remoteConfig[IS_APP_BLOCKED_KEY].asBoolean()
                     Log.i(TAG, "Fetch and activate updated: $updated with value: $isAppBlocked")
                 } else {
                     Log.e(TAG, "Fetch failed")
