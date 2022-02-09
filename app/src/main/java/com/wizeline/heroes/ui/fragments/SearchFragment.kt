@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wizeline.heroes.Endpoint
@@ -20,12 +21,18 @@ import com.wizeline.heroes.toMD5
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.dismissDialog
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.isInternetAvailable
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.showDialog
-import com.wizeline.heroes.ui.abstract.PaginationScrollListener
+import com.wizeline.heroes.ui.abstractClasses.PaginationScrollListener
 import com.wizeline.heroes.ui.adapters.CharacterRecyclerViewAdapter
 import com.wizeline.heroes.viewmodels.MarvelViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
+@FlowPreview
+@ExperimentalCoroutinesApi
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
@@ -66,11 +73,17 @@ class SearchFragment : Fragment() {
     }
 
     private fun searchCharacters() {
-        mMarvelViewModel.includeSearchQuery(mBinding.etCharacterSearch.text.toString())
-        mMarvelViewModel.togglePagination(true)
         mOffset = 0
-        changeLoadingState(true)
-        refreshCharacters()
+        val timestamp = System.currentTimeMillis().toString()
+        val hash = (timestamp + Endpoint.PRIVATE_KEY + Endpoint.API_KEY).toMD5()
+        mMarvelViewModel.doUiAction(
+            MarvelViewModel.UiAction.Search(
+                mBinding.etCharacterSearch.text.toString().trim(),
+                mOffset,
+                timestamp,
+                hash
+            )
+        )
     }
 
     private fun setupViewModelObservable() {
@@ -79,6 +92,12 @@ class SearchFragment : Fragment() {
                 renderViewState(it)
             }
         })
+        lifecycleScope.launch {
+            mMarvelViewModel.searchDataFlow.collect {
+                Log.w("lifecycleScopeLaunch()", "Collect: $it")
+                renderViewState(it)
+            }
+        }
     }
 
     private fun setupRecyclerView() {
