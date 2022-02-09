@@ -4,7 +4,6 @@ import com.wizeline.heroes.Characters
 import com.wizeline.heroes.Endpoint.API_KEY
 import com.wizeline.heroes.di.Retrofit
 import com.wizeline.heroes.interfaces.IRepository
-import com.wizeline.heroes.ui.abstractClasses.BaseApiResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,7 +13,7 @@ import javax.inject.Inject
 
 class GetMarvelCharactersUseCase @Inject constructor(
     @Retrofit var repository: IRepository,
-) : BaseApiResponse() {
+) {
 
     // TODO: 24/01/22 Delete livedata instance and return single response to ViewModel.
     suspend operator fun invoke(
@@ -34,15 +33,14 @@ class GetMarvelCharactersUseCase @Inject constructor(
     ): Flow<NetworkResult<Characters>> {
         return flow {
             emit(
-                safeApiCall {
-                    repository.getCharacters(
-                        timestamp,
-                        API_KEY,
-                        hash,
-                        offset,
-                        startsWith
-                    )
-                })
+                repository.getCharactersAsFlow(
+                    timestamp,
+                    API_KEY,
+                    hash,
+                    offset,
+                    startsWith
+                )
+            )
         }.flowOn(Dispatchers.IO)
     }
 
