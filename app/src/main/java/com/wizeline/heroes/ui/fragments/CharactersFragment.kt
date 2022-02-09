@@ -19,11 +19,10 @@ import com.wizeline.heroes.toMD5
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.dismissDialog
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.isInternetAvailable
 import com.wizeline.heroes.ui.FragmentExtensionFunctions.showDialog
-import com.wizeline.heroes.ui.abstract.PaginationScrollListener
+import com.wizeline.heroes.ui.abstractClasses.PaginationScrollListener
 import com.wizeline.heroes.ui.adapters.CharacterRecyclerViewAdapter
 import com.wizeline.heroes.viewmodels.MarvelViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class CharactersFragment : Fragment() {
