@@ -10,12 +10,14 @@ import com.wizeline.heroes.TestUtils.Companion.RETROFIT_SUCCESS_RESPONSE
 import com.wizeline.heroes.TestUtils.Companion.SEARCH_QUERY
 import com.wizeline.heroes.TestUtils.Companion.getOrAwaitValue
 import com.wizeline.heroes.di.CoroutineDispatcherProvider
+import com.wizeline.heroes.rules.CoroutineTestRule
 import com.wizeline.heroes.toMD5
 import com.wizeline.heroes.usecases.GetMarvelCharactersUseCase
 import io.mockk.coEvery
 import io.mockk.mockkClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -26,6 +28,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class MarvelViewModelTest {
 
     // Run tasks synchronously
@@ -33,10 +36,11 @@ class MarvelViewModelTest {
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    @ExperimentalCoroutinesApi
-    private val unconfinedTestDispatcher = UnconfinedTestDispatcher()
+    @Rule
+    @JvmField
+    val testCoroutine = CoroutineTestRule()
 
-
+    @FlowPreview
     private lateinit var marvelViewModel: MarvelViewModel
     private lateinit var useCase: GetMarvelCharactersUseCase
 
@@ -44,10 +48,10 @@ class MarvelViewModelTest {
     private val hash = (timestamp + Endpoint.PRIVATE_KEY + Endpoint.API_KEY).toMD5()
     private val DEFAULT_OFFSET = 5
 
+    @FlowPreview
     @ExperimentalCoroutinesApi
     @Before
     fun setup() {
-        Dispatchers.setMain(unconfinedTestDispatcher)
         val retrofitResponse = RETROFIT_SUCCESS_RESPONSE
         val retrofitErrorResponse = RETROFIT_ERROR_RESPONSE
         val repository = mockkClass(RetrofitRepository::class)
@@ -87,18 +91,10 @@ class MarvelViewModelTest {
 
         useCase = GetMarvelCharactersUseCase(repository)
         marvelViewModel =
-            MarvelViewModel(useCase, CoroutineDispatcherProvider(unconfinedTestDispatcher))
+            MarvelViewModel(useCase, CoroutineDispatcherProvider(testCoroutine.dispatcher))
     }
 
-    @ExperimentalCoroutinesApi
-    @After
-    fun tearDown() {
-        // 2
-        Dispatchers.resetMain()
-        // 3
-        unconfinedTestDispatcher.cancel()
-    }
-
+    @FlowPreview
     @Test
     fun `call to getCharacters emits non null viewState`() {
         marvelViewModel.getCharacters(DEFAULT_OFFSET, timestamp, hash)
